@@ -5,13 +5,13 @@ import { IAuction } from "../interface/IAuction";
 
 @injectable()
 export class Auctions implements ICarOnSaleClient {
-
+    auctionsData: IAuction[];
     public constructor() {
+        this.auctionsData = [];
     }
 
-
-    getRunningAuctions(): Promise<IAuction[]> {
-        throw new Error("Method not implemented.");
+    getRunningAuctions(): any {
+        return this.auctionsData;
     }
 
 }

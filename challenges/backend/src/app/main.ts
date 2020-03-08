@@ -5,6 +5,7 @@ import { AuctionMonitorApp } from "./AuctionMonitorApp";
 import { DependencyIdentifier } from "./DependencyIdentifiers";
 import { ICarOnSaleClient } from "./services/CarOnSaleClient/interface/ICarOnSaleClient";
 import { Auctions } from "./services/CarOnSaleClient/classes/Auctions";
+import { AuctionsService } from "./services/auctions.service";
 
 /*
  * Create the DI container.
@@ -18,7 +19,6 @@ const container = new Container({
  */
 container.bind<ILogger>(DependencyIdentifier.LOGGER).to(Logger);
 container.bind<ICarOnSaleClient>(DependencyIdentifier.AUCTIONS).to(Auctions);
-
 
 /*
  * Inject all dependencies in the application & retrieve application instance.

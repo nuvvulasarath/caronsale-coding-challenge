@@ -8,3 +8,29 @@ export default class Helper {
         return password;
     }
 }
+
+export interface IAuthenticationResult {
+    authenticated: boolean;
+    privileges: string;
+    token: string;
+    type: null | number;
+    userId: string;
+}
+
+export interface IAuctionFilterRequest {
+    ids: [];
+    uuid: [];
+    externalIds: [];
+    endingTimeAfter: string;
+    needsReview: boolean;
+    paymentProcesses: [];
+}
+
+export const headerOptions = {
+    headers: {
+        'accept': 'application/json',
+        'Content-Type': 'application/json',
+    }
+}
+
+
