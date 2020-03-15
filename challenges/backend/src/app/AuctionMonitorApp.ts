@@ -5,8 +5,9 @@ import "reflect-metadata";
 import { ICarOnSaleClient } from "./services/CarOnSaleClient/interface/ICarOnSaleClient";
 import { IAuction } from "./services/CarOnSaleClient/interface/IAuction";
 import { AuctionsService } from "./services/auctions.service";
-import Helper, { headerOptions, IAuthenticationResult } from "./helper"
+import Helper, { IAuthenticationResult } from "./helper"
 import axios from "axios";
+import { AppConstants, headerOptions } from "./app.constants";
 
 
 
@@ -14,16 +15,15 @@ import axios from "axios";
 export class AuctionMonitorApp {
     auctionsData: IAuction[];
     authenticationResult: IAuthenticationResult;
+    numberOfAuctions: number;
 
-    public constructor(@inject(DependencyIdentifier.LOGGER) private logger: ILogger,
-        @inject(DependencyIdentifier.AUCTIONS) private auctions: ICarOnSaleClient) {
+    public constructor(@inject(DependencyIdentifier.LOGGER) private logger: ILogger) {
     }
 
-    getAuthToken() {
-        let userName = 'salesman@random.com'
-        let hashedPwd = Helper.prepareHashPassowrd('123test');
+    private getAuthTokenandAuctionData() {
+        let hashedPwd = Helper.prepareHashPassowrd(AppConstants.password);
         console.log(`[Hashed Pwd]: ${hashedPwd}`);
-        const url = 'https://caronsale-backend-service-dev.herokuapp.com/api/v1/authentication' + '/' + userName;
+        const url = AppConstants.baseURL + 'authentication/' + AppConstants.userName;
 
         axios.put(url, {
             password: hashedPwd
@@ -43,20 +43,28 @@ export class AuctionMonitorApp {
         let service = new AuctionsService()
         service.getSalesmanAuctions(this.authenticationResult)
             .then(result => {
-                console.log(`[Result]: ${result}`);
+                this.auctionsData = result.data;
+                // dispaly required information based on the result.
+                this.processData(this.auctionsData);
+                //console.log(`[Result]: ${JSON.stringify(this.auctionsData)}`);
             })
             .catch((error) => {
                 console.log(`[Error]: ${error}`);
             });
     }
 
+    private processData(data: any) {
+        this.numberOfAuctions = data.length;
+        this.logger.log(`Number of auctions are. ${this.numberOfAuctions}`);
+        // As per the result we got, we cannot calculate average and percentage values because the values of numBids and currentHighestBidValue are zero.
+        // Therefore i am not displaying that information. 
+    }
+
     public async start(): Promise<void> {
 
         this.logger.log(`Auction Monitor started.`);
-
-        this.getAuthToken();
-
-        // TODO: Retrieve auctions and display aggregated information (see README.md)
+        // get the Auhentication token and then call the auctions API with the token details
+        this.getAuthTokenandAuctionData();
 
     }
 }

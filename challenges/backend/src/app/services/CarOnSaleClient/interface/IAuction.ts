@@ -1,6 +1,6 @@
 export interface IAuction {
     label: string;
-    numOfBids: number;
+    numBids: number;
     currentHighestBidValue: number;
     minimumRequiredAsk: number;
 }

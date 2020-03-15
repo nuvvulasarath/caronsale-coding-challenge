@@ -5,7 +5,6 @@ import { AuctionMonitorApp } from "./AuctionMonitorApp";
 import { DependencyIdentifier } from "./DependencyIdentifiers";
 import { ICarOnSaleClient } from "./services/CarOnSaleClient/interface/ICarOnSaleClient";
 import { Auctions } from "./services/CarOnSaleClient/classes/Auctions";
-import { AuctionsService } from "./services/auctions.service";
 
 /*
  * Create the DI container.
